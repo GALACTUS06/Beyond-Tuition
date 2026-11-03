@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>College ROI Explorer — CSE 332 Capstone</title>
+<link rel="stylesheet" href="style.css">
+<!-- d3.v3.js is the same course-provided library as the labs. If you have the course copy, drop it over d3/d3.v3.js.
+     states.js  = US state outlines (made once by tools/build_geo.js)
+     data.js    = ALL analysis results (PCA, k-means, MDS, ...) made once by prepare.py. This page only reads and draws them.
+     main.js    = draws everything and links the views through one shared selection.
+     This page = ONE screen, all six views always visible. index_tabs.html is the same dashboard with optional focus tabs. -->
+<script src="d3/d3.v3.js"></script>
+<script src="states.js"></script>
+<script src="data.js"></script>
+</head>
+<body>
+
+<header id="top">
+  <div class="brand">
+    <h1>College ROI Explorer</h1>
+    <span id="synthTag" class="synth" hidden>SYNTHETIC TEST DATA - not real colleges</span>
+  </div>
+  <div id="badge" class="badge"></div>
+</header>
+
+<div id="bar2">
+  <div class="ctl">
+    <label>Color by <select id="colorBy"></select></label>
+    <span class="ramp"><span id="rampMin"></span><span id="rampBar"></span><span id="rampMax"></span></span>
+  </div>
+  <div class="stories">
+    <b>Stories</b>
+    <button id="st1" title="High net price, low earnings">Price trap</button>
+    <button id="st2" title="High Pell share, strong completion">Beating the odds</button>
+    <button id="st3" title="Zoom the sunburst into one region and compare its states">Where you study</button>
+    <button id="clearAll">Clear selection</button>
+  </div>
+  <div id="story" class="story">Click, brush or expand in any view - every other view follows. Pick a story above for a guided example.</div>
+</div>
+
+<main id="grid">
+  <section class="panel" id="p-sun">
+    <div class="ph"><h2>Sunburst</h2><span class="hint">click a slice to expand it · click the center to go up</span>
+      <span class="ctlr"><select id="sunHier" title="Which levels, in which order"></select>
+      <select id="sunSize" title="What slice angle means"><option value="enroll">angle: enrollment</option><option value="count">angle: college count</option></select></span></div>
+    <div class="crumb" id="sunCrumb"></div>
+    <div class="pb" id="b-sun"></div>
+  </section>
+
+  <section class="panel" id="p-map">
+    <div class="ph"><h2>Map</h2><span class="hint">click a state · dots = colleges</span>
+      <span class="ctlr">shade <select id="mapShade"></select></span></div>
+    <div class="pb" id="b-map"></div>
+  </section>
+
+  <section class="panel" id="p-emb">
+    <div class="ph"><h2>Similarity map</h2><span class="hint">drag to brush</span>
+      <span class="ctlr"><select id="embView"><option value="mds">Data MDS</option><option value="pca">PCA biplot</option><option value="scatter">Scatterplot</option></select>
+      <select id="embX"></select> <select id="embY"></select></span></div>
+    <div class="pb" id="b-emb"></div>
+  </section>
+
+  <section class="panel" id="p-pcp">
+    <div class="ph"><h2>Parallel coordinates</h2><span class="hint">drag on an axis to filter · axis order follows the attribute map</span></div>
+    <div class="pb" id="b-pcp"></div>
+  </section>
+
+  <section class="panel" id="p-vmds">
+    <div class="ph"><h2>How attributes relate</h2><span class="hint">click in order to reorder the axes</span></div>
+    <div class="pbtn"><button id="bestOrder">Best correlation order</button><button id="resetOrder">Reset order</button></div>
+    <div class="pb" id="b-vmds"></div>
+  </section>
+
+  <section class="panel" id="p-side">
+    <div class="ph"><h2>Clusters &amp; selection</h2><span class="hint">click a bar to set k</span></div>
+    <div id="sideBox"><div id="sideFit">
+      <div id="b-elbow"></div>
+      <div id="b-legend"></div>
+      <div id="b-summary"></div>
+    </div></div>
+  </section>
+</main>
+
+<div id="tip"></div>
+<script src="main.js"></script>
+</body>
+</html>
